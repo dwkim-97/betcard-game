@@ -1,6 +1,6 @@
 export const INITIAL_POOL = 5;
-export const PHASE_TIMER_SEC = 20;
-export const PHASE_TIMER_MS = 20_000;
+export const PHASE_TIMER_SEC = 30;
+export const PHASE_TIMER_MS = 30_000;
 export const POLLING_INTERVAL_MS = 3_000;
 export const RESOLVE_DISPLAY_MS = 3_000;
 export const INVITE_CODE_LENGTH = 6;

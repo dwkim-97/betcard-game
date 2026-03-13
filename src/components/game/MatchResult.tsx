@@ -9,6 +9,71 @@ interface MatchResultProps {
   pastRounds: PastRoundSummary[];
 }
 
+function CardBadge({ value, label }: { value: number | null; label: string }) {
+  if (value === null) return null;
+  return (
+    <div className="flex flex-col items-center gap-0.5">
+      <span className="text-[10px] text-gray-500">{label}</span>
+      <span
+        className={cn(
+          "w-7 h-9 flex items-center justify-center rounded text-sm font-bold",
+          value < 0 ? "bg-red-900/60 text-red-300" : "bg-gray-700 text-gray-200"
+        )}
+      >
+        {value >= 0 ? `+${value}` : value}
+      </span>
+    </div>
+  );
+}
+
+function RoundDetail({ r, myName, oppName }: { r: PastRoundSummary; myName: string; oppName: string }) {
+  return (
+    <div className="bg-gray-800/50 rounded-lg px-3 py-3 space-y-2">
+      {/* Round header */}
+      <div className="flex items-center justify-between">
+        <span className="text-gray-400 font-medium">R{r.roundNumber}</span>
+        <span
+          className={cn(
+            "text-xs font-bold px-2 py-0.5 rounded",
+            r.myOutcome === "WIN" && "bg-amber-400/20 text-amber-400",
+            r.myOutcome === "LOSE" && "bg-red-400/20 text-red-400",
+            r.myOutcome === "DRAW" && "bg-gray-400/20 text-gray-400"
+          )}
+        >
+          {r.myOutcome}
+        </span>
+        <span className="text-gray-400 text-sm">
+          +{r.myScoreBreakdown.total} / +{r.opponentScoreDelta}
+        </span>
+      </div>
+
+      {/* Card details */}
+      <div className="space-y-1.5">
+        {/* My cards */}
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-gray-500 w-16 shrink-0 truncate">{myName}</span>
+          <div className="flex gap-1.5">
+            <CardBadge value={r.myBet} label="배팅" />
+            <CardBadge value={r.myGiveCard} label="제시" />
+            <CardBadge value={r.myUseCard} label="선택" />
+            <CardBadge value={r.myResult} label="결과" />
+          </div>
+        </div>
+        {/* Opponent cards */}
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-gray-500 w-16 shrink-0 truncate">{oppName}</span>
+          <div className="flex gap-1.5">
+            <CardBadge value={r.opponentBet} label="배팅" />
+            <CardBadge value={r.opponentGiveCard} label="제시" />
+            <CardBadge value={r.opponentUseCard} label="선택" />
+            <CardBadge value={r.opponentResult} label="결과" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function MatchResult({ match, pastRounds }: MatchResultProps) {
   const isWinner = match.winnerId !== null && match.myTotalScore > match.opponentTotalScore;
   const isLoser = match.winnerId !== null && match.myTotalScore < match.opponentTotalScore;
@@ -42,32 +107,17 @@ export function MatchResult({ match, pastRounds }: MatchResultProps) {
         </div>
       </div>
 
-      {/* Round history */}
+      {/* Round history with card details */}
       {pastRounds.length > 0 && (
-        <div className="w-full max-w-xs space-y-2">
+        <div className="w-full max-w-sm space-y-2">
           <h3 className="text-sm text-gray-500 text-center">라운드 기록</h3>
           {pastRounds.map((r) => (
-            <div
+            <RoundDetail
               key={r.roundNumber}
-              className="flex items-center justify-between bg-gray-800/50 rounded-lg px-3 py-2 text-sm"
-            >
-              <span className="text-gray-400">
-                R{r.roundNumber}
-              </span>
-              <span
-                className={cn(
-                  "font-bold",
-                  r.myOutcome === "WIN" && "text-amber-400",
-                  r.myOutcome === "LOSE" && "text-red-400",
-                  r.myOutcome === "DRAW" && "text-gray-400"
-                )}
-              >
-                {r.myOutcome === "WIN" ? "WIN" : r.myOutcome === "LOSE" ? "LOSE" : "DRAW"}
-              </span>
-              <span className="text-gray-400">
-                +{r.myScoreBreakdown.total}
-              </span>
-            </div>
+              r={r}
+              myName={match.myNickname}
+              oppName={match.opponentNickname}
+            />
           ))}
         </div>
       )}

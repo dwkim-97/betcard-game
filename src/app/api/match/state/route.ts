@@ -170,6 +170,14 @@ function buildPastRoundSummary(
       total: myTotal,
     },
     opponentScoreDelta: oppTotal,
+    myBet: round[`${myPrefix}_bet`] as number | null,
+    opponentBet: round[`${oppPrefix}_bet`] as number | null,
+    myGiveCard: round[`${myPrefix}_give_card`] as number | null,
+    opponentGiveCard: round[`${oppPrefix}_give_card`] as number | null,
+    myUseCard: round[`${myPrefix}_use_card`] as number | null,
+    opponentUseCard: round[`${oppPrefix}_use_card`] as number | null,
+    myResult: round[`${myPrefix}_result`] as number | null,
+    opponentResult: round[`${oppPrefix}_result`] as number | null,
   };
 }
 

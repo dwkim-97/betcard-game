@@ -146,6 +146,15 @@ export interface PastRoundSummary {
   myOutcome: Outcome;
   myScoreBreakdown: ScoreBreakdown;
   opponentScoreDelta: number;
+  // Card details (revealed on match end)
+  myBet: number | null;
+  opponentBet: number | null;
+  myGiveCard: number | null;
+  opponentGiveCard: number | null;
+  myUseCard: number | null;
+  opponentUseCard: number | null;
+  myResult: number | null;
+  opponentResult: number | null;
 }
 
 export interface SubmitBetRequest {
