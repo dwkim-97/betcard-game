@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { HowToPlay } from "@/components/game/HowToPlay";
 import { usePlayerId } from "@/hooks/usePlayerId";
 import { createMatch, joinMatch } from "@/lib/api";
 
@@ -14,6 +15,7 @@ export default function Home() {
   const [isCreating, setIsCreating] = useState(false);
   const [isJoining, setIsJoining] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showGuide, setShowGuide] = useState(false);
   const [nicknameInput, setNicknameInput] = useState("");
 
   // Wait for playerId to load from localStorage
@@ -137,6 +139,15 @@ export default function Home() {
           {error}
         </div>
       )}
+
+      {/* How to play */}
+      <button
+        onClick={() => setShowGuide(true)}
+        className="text-sm text-gray-500 hover:text-gray-300 underline underline-offset-4 transition-colors"
+      >
+        플레이 방법
+      </button>
+      {showGuide && <HowToPlay onClose={() => setShowGuide(false)} />}
     </div>
   );
 }
